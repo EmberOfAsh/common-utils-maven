@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="struts-basic" extends="struts-default">
+		<!-- 2016.8.15 注释，注释原因：Struts2 可以自己根据类型注入，不用自己实现注入事项 -->
+		<!-- 定义全局服务注册拦截器 -->
+		<!-- <interceptors> -->
+		<!-- <interceptor name="actionServiceRegister" class="com.zltel.common.interceptor.ServiceRegisterInterceptor"></interceptor> -->
+		<!-- <interceptor-stack name="actionServiceRegister"> -->
+		<!-- <interceptor-ref name="actionServiceRegister"></interceptor-ref> -->
+		<!-- 引用struts2自带的拦截器缺省堆栈defaultStack -->
+		<!-- <interceptor-ref name="defaultStack"></interceptor-ref> -->
+		<!-- </interceptor-stack> -->
+		<!-- </interceptors> -->
+		<!-- <default-interceptor-ref name="actionServiceRegister"></default-interceptor-ref> -->
+	</package>
+
+	<package name="json-basic" extends="json-default">
+		<!-- 2016.8.15 注释，注释原因：Struts2 可以自己根据类型注入，不用自己实现注入事项 -->
+		<!-- 定义全局服务注册拦截器 -->
+		<!-- <interceptors> -->
+		<!-- <interceptor name="actionServiceRegister" class="com.zltel.common.interceptor.ServiceRegisterInterceptor"></interceptor> -->
+		<!-- <interceptor-stack name="actionServiceRegister"> -->
+		<!-- <interceptor-ref name="actionServiceRegister"></interceptor-ref> -->
+		<!-- 引用struts2自带的拦截器缺省堆栈defaultStack -->
+		<!-- <interceptor-ref name="defaultStack"></interceptor-ref> -->
+		<!-- </interceptor-stack> -->
+		<!-- </interceptors> -->
+		<!-- <default-interceptor-ref name="actionServiceRegister"></default-interceptor-ref> -->
+	</package>
+</struts>

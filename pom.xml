@@ -1,0 +1,273 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.zltel</groupId>
+	<artifactId>zl-com-utils</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<inceptionYear>2016.1</inceptionYear>
+	<name>卓凌公共工具类基础jar包</name>
+	<!-- SNAPSHOT|RELEASE -->
+	<description>公共基础jar包
+更改记录：
+2016.1.1	初始
+			增加 jdbc操作工具类 -- 更新POM,添加依赖
+			 增加 反射操作工具类,增加 快速发布jar包到系统私服的设定
+			发布命令: mvn deploy -e   或   mvn deploy clean
+			增加Hadoop MR 任务配置项工具类 ;
+			Date和DateUtil更改为线程同步,将静态SimpleDateFormat标记为过期
+			增加SQL工具类，重构BaseJdbcUtil相应方法、IO工具类
+2016.8.18	增加标准CSV文件导出工具类
+2016.8.20	增加excel2003、2007 读写适配工具类
+2016.8.25	增加MapReduce中，对关系型数据库进行操作的基础操作类
+2016.8.26	修复excel读取类读取少一行的错误
+2016.8.28	ConfigUtil增加从jar文件读取配置文件的方法
+2016.8.29	删除struts-common.xml中关于基础package的定义内容,因为Struts2已经可以自动注入Spring引用了。
+
+
+snapshot:
+0.0.1-SNAPSHOT	
+0.1.0-SNAPSHOT	2016.8.28
+
+		
+						
+release:
+1.0.0-RELEASE	2016.8.20
+1.0.1-RELEASE	2016.8.28		
+						
+	</description>
+
+
+	<!-- 版本配置 -->
+	<properties>
+
+		<argLine>-Dfile.encoding=UTF-8</argLine>
+		<junit.version>4.0</junit.version>
+		<log4j.version>1.2.17</log4j.version>
+		<jdk.version>1.7</jdk.version>
+		<hadoop.version>2.6.0</hadoop.version>
+		<hbase.version>1.0.0</hbase.version>
+		<struts2.version>2.3.28</struts2.version>
+		<spring.version>4.2.5.RELEASE</spring.version>
+		<mysql.version>5.1.38</mysql.version>
+		<ojdbc.version>10.2.0.4.0</ojdbc.version>
+		<fastjson.version>1.1.15</fastjson.version>
+		<quartz.version>2.2.2</quartz.version>
+		<dbcp.version>1.4</dbcp.version>
+		<poi.version>3.8</poi.version>
+		<servlet.version>3.1.0</servlet.version>
+
+	</properties>
+	<!-- 设置 第一请求源 为本地局域网私服 -->
+	<repositories>
+		<repository>
+			<id>nexus</id>
+			<name>Team Nexus Repository</name>
+			<url>http://192.168.1.119:8000/nexus/content/groups/public</url>
+		</repository>
+		<repository>
+			<id>user-releases</id>
+			<name>内部项目发布源</name>
+			<url>http://192.168.1.119:8000/nexus/content/repositories/releases</url>
+		</repository>
+		<repository>
+			<id>user-snapshots</id>
+			<name>内部项目预览 发布源</name>
+			<url>http://192.168.1.119:8000/nexus/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>nexus</id>
+			<name>Team Nexus Repository</name>
+			<url>http://192.168.1.119:8000/nexus/content/groups/public</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<!-- 发布到 私服的编译版 -->
+	<distributionManagement>
+		<repository>
+			<id>user-releases</id>
+			<url>http://192.168.1.119:8000/nexus/content/repositories/releases</url>
+			<!-- 正式发布版 -->
+		</repository>
+		<snapshotRepository>
+			<id>user-snapshots</id>
+			<url>http://192.168.1.119:8000/nexus/content/repositories/snapshots</url>
+			<!--测试预览版 -->
+		</snapshotRepository>
+	</distributionManagement>
+	<!-- 发布到 私服的编译版 -->
+
+	<!-- 添加依赖 -->
+	<dependencies>
+		<dependency>
+			<groupId> junit </groupId>
+			<artifactId> junit </artifactId>
+			<version> ${junit.version} </version>
+			<scope> test </scope>
+		</dependency>
+		<dependency>
+			<groupId> log4j </groupId>
+			<artifactId> log4j </artifactId>
+			<version> ${log4j.version} </version>
+		</dependency>
+
+		<dependency>
+			<groupId>jdk.tools</groupId>
+			<artifactId>jdk.tools</artifactId>
+			<version>${jdk.version}</version>
+			<scope>system</scope>
+			<systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
+		</dependency>
+
+		<!-- Struts2 -->
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-core</artifactId>
+			<version>${struts2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-spring-plugin</artifactId>
+			<version>${struts2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-json-plugin</artifactId>
+			<version>${struts2.version}</version>
+		</dependency>
+
+
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!-- quartz -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
+
+		<!-- dbcp -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>${dbcp.version}</version>
+		</dependency>
+
+		<!-- mysql-connector-java -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+		</dependency>
+
+		<!-- ojdbc14 -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>${ojdbc.version}</version>
+		</dependency>
+
+		<!-- hbase -->
+		<dependency>
+			<groupId>org.apache.hbase</groupId>
+			<artifactId>hbase-server</artifactId>
+			<version>${hbase.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hbase</groupId>
+			<artifactId>hbase-client</artifactId>
+			<version>${hbase.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hbase</groupId>
+			<artifactId>hbase-common</artifactId>
+			<version>${hbase.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hbase</groupId>
+			<artifactId>hbase-protocol</artifactId>
+			<version>${hbase.version}</version>
+		</dependency>
+
+		<!-- FastJson -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
+
+		<!-- POI -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+
+		<!-- servlet-api -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+
+	<build>
+		<!-- 源代码包和测试源码包,有多个用","号分割 -->
+		<sourceDirectory>.\src\common</sourceDirectory>
+		<testSourceDirectory>.\src\test-common</testSourceDirectory>
+		<plugins>
+			<!-- 打包源代码插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>
